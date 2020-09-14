@@ -159,6 +159,7 @@ class TodoLists extends React.Component {
                 const updatedTodos = this.state.todos.filter(
                   todo => !todo.isDone
                 );
+                localStorage.setItem("todos", JSON.stringify(updatedTodos));
                 this.setState({ todos: updatedTodos });
               }}
             >
