@@ -1,9 +1,13 @@
 import React from "react";
+import Input from "./Input";
+import AllTodos from "./AllTodos";
+import Footer from "./Footer";
 
 class TodoLists extends React.Component {
   constructor() {
     super();
     this.state = {
+      inputText: "",
       todos: localStorage.getItem("todos")
         ? JSON.parse(localStorage.getItem("todos"))
         : [],
@@ -12,161 +16,142 @@ class TodoLists extends React.Component {
     };
   }
 
-  render() {
-    console.log(this.state.todos, "render");
-
+  showTodos = () => {
     let showTodos = [];
-
     switch (this.state.activeTab) {
       case "all":
         showTodos = this.state.todos;
-        break;
+        return showTodos;
+
       case "completed":
         showTodos = this.state.todos.filter(todo => todo.isDone);
-        break;
+        return showTodos;
+
       case "active":
         showTodos = this.state.todos.filter(todo => !todo.isDone);
-        break;
+        return showTodos;
 
       default:
         showTodos = this.state.todos;
-        break;
+        return showTodos;
     }
+  };
 
+  addTodo = event => {
+    if (event.keyCode === 13) {
+      const text = event.target.value;
+      const todo = {
+        text: text,
+        isDone: false
+      };
+      const updatedTodos = this.state.todos;
+      updatedTodos.push(todo);
+
+      this.setState({ todos: updatedTodos, inputText: "" }, () =>
+        localStorage.setItem("todos", JSON.stringify(this.state.todos))
+      );
+      // event.target.value = "";
+    }
+  };
+
+  handleSelectAll = event => {
+    if (this.state.counter === 0) {
+      console.log("enter");
+      this.state.todos.forEach(todo => {
+        if (!todo.isDone) {
+          todo.isDone = true;
+        }
+      });
+      this.setState({ counter: this.state.counter + 1 });
+    } else {
+      this.state.todos.forEach(todo => {
+        todo.isDone = !todo.isDone;
+      });
+      this.setState({ counter: 0 });
+    }
+    this.setState({ todos: this.state.todos }, () =>
+      localStorage.setItem("todos", JSON.stringify(this.state.todos))
+    );
+  };
+
+  handleInputTextValue = event => {
+    const inputText = event.target.value;
+    this.setState({ inputText: inputText });
+  };
+
+  handleisDone = event => {
+    const id = event.target.dataset.id;
+    // let todos = this.state.todos;
+    // let todo = todos.find((todo,index) => todo.index === id);
+
+    // todo = {...todo,isDone:!todo.isDone};
+    // todos = [...todos]
+
+    // this.setState({ isDone: !this.state.todos[id].isDone });
+    let updatedTodos = this.state.todos;
+    updatedTodos[id].isDone = !updatedTodos[id].isDone;
+    // localStorage.setItem("todos", JSON.stringify(this.state.todos));
+    // this.setState({ isDone: this.state.todos[id].isDone });
+    this.setState({ todos: updatedTodos }, () =>
+      localStorage.setItem("todos", JSON.stringify(this.state.todos))
+    );
+  };
+
+  handleDelete = event => {
+    const id = event.target.dataset.id;
+    this.state.todos.splice(id, 1);
+    localStorage.setItem("todos", JSON.stringify(this.state.todos));
+    this.setState({ todos: this.state.todos }, () =>
+      localStorage.setItem("todos", JSON.stringify(this.state.todos))
+    );
+  };
+
+  handleAll = event => {
+    this.setState({ activeTab: "all" });
+  };
+  handleCompleted = event => {
+    this.setState({ activeTab: "completed" });
+  };
+  handleActive = event => {
+    this.setState({ activeTab: "active" });
+  };
+  handleClearCompleted = event => {
+    const updatedTodos = this.state.todos.filter(todo => !todo.isDone);
+
+    this.setState({ todos: updatedTodos }, () =>
+      localStorage.setItem("todos", JSON.stringify(updatedTodos))
+    );
+  };
+
+  render() {
+    const showTodos = this.showTodos();
     return (
       <>
-        <div className="drop-down-flex">
-          <i
-            className="fas fa-chevron-down drop-down-menu"
-            onClick={event => {
-              if (this.state.counter === 0) {
-                console.log("enter");
-                showTodos.forEach(todo => {
-                  if (!todo.isDone) {
-                    todo.isDone = true;
-                  }
-                });
-                this.state.counter = this.state.counter + 1;
-                console.log(this.state.counter);
-              } else {
-                console.log("entered");
-                showTodos.forEach(todo => {
-                  todo.isDone = !todo.isDone;
-                });
-                this.state.counter = 0;
-              }
-              localStorage.setItem("todos", JSON.stringify(this.state.todos));
-              this.setState({ todos: this.state.todos });
-            }}
-          ></i>
-          {console.log("counter", this.state.counter)}
-          <input
-            type="text"
-            placeholder="write something"
-            className="text-input"
-            onKeyUp={event => {
-              if (event.keyCode === 13) {
-                const text = event.target.value;
-                const todo = {
-                  text: text,
-                  isDone: false
-                };
-                const updatedTodos = this.state.todos;
-                updatedTodos.push(todo);
-                localStorage.setItem("todos", JSON.stringify(this.state.todos));
+        <Input
+          todos={this.state.todos}
+          counter={this.state.counter}
+          inputText={this.state.inputText}
+          handleSelectAll={this.handleSelectAll}
+          handleInputTextValue={this.handleInputTextValue}
+          addTodo={this.addTodo}
+        />
+        <AllTodos
+          todos={this.state.todos}
+          handleisDone={this.handleisDone}
+          handleDelete={this.handleDelete}
+          showTodos={showTodos}
+        />
 
-                this.setState({ todos: updatedTodos });
-                event.target.value = "";
-              }
-            }}
-          />
-        </div>
-        <ul>
-          {showTodos.map((todo, index) => {
-            return (
-              <li>
-                <input
-                  className="input-checkbox"
-                  type="checkbox"
-                  name="isDone"
-                  id=""
-                  checked={todo.isDone}
-                  data-id={index}
-                  onClick={event => {
-                    const id = event.target.dataset.id;
-                    this.state.todos[id].isDone = !this.state.todos[id].isDone;
-                    localStorage.setItem(
-                      "todos",
-                      JSON.stringify(this.state.todos)
-                    );
-                    this.setState({ isDone: this.state.todos[id].isDone });
-                    console.log(this.state.todos[id].isDone);
-                  }}
-                />
-                <p className="para-target">{todo.text}</p>
-                <span
-                  className="span"
-                  data-id={index}
-                  onClick={event => {
-                    const id = event.target.dataset.id;
-                    this.state.todos.splice(id, 1);
-                    localStorage.setItem(
-                      "todos",
-                      JSON.stringify(this.state.todos)
-                    );
-                    this.setState({ todos: this.state.todos });
-                  }}
-                >
-                  X
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-        <footer>
-          <span className="item">
-            {showTodos.filter(todo => !todo.isDone).length} items left
-          </span>
-          <button
-            className="all"
-            onClick={event => {
-              this.setState({ activeTab: "all" });
-            }}
-          >
-            All
-          </button>
-          <button
-            className="completed"
-            onClick={event => {
-              this.setState({ activeTab: "completed" });
-            }}
-          >
-            Completed
-          </button>
-          <button
-            className="active"
-            onClick={event => {
-              this.setState({ activeTab: "active" });
-            }}
-          >
-            Active
-          </button>
-          <button className="clear">
-            <a
-              className="anchor"
-              href="#"
-              onClick={event => {
-                const updatedTodos = this.state.todos.filter(
-                  todo => !todo.isDone
-                );
-                localStorage.setItem("todos", JSON.stringify(updatedTodos));
-                this.setState({ todos: updatedTodos });
-              }}
-            >
-              Clear Completed
-            </a>
-          </button>
-        </footer>
+        <Footer
+          todosInState={this.state.todos}
+          showTodos={showTodos}
+          handleFooterEvents={{
+            all: this.handleAll,
+            active: this.handleActive,
+            completed: this.handleCompleted,
+            clearCompleted: this.handleClearCompleted
+          }}
+        />
       </>
     );
   }
