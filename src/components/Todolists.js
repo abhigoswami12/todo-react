@@ -90,7 +90,6 @@ class TodoLists extends React.Component {
     // this.setState({ isDone: !this.state.todos[id].isDone });
     let updatedTodos = this.state.todos;
     updatedTodos[id].isDone = !updatedTodos[id].isDone;
-    // localStorage.setItem("todos", JSON.stringify(this.state.todos));
     // this.setState({ isDone: this.state.todos[id].isDone });
     this.setState({ todos: updatedTodos }, () =>
       localStorage.setItem("todos", JSON.stringify(this.state.todos))
