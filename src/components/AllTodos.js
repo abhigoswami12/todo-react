@@ -12,11 +12,15 @@ function AllTodos(props) {
               name="isDone"
               id=""
               checked={todo.isDone}
-              data-id={index}
+              data-id={todo.id}
               onChange={props.handleisDone}
             />
             <p className="para-target">{todo.text}</p>
-            <span className="span" data-id={index} onClick={props.handleDelete}>
+            <span
+              className="span"
+              data-id={todo.id}
+              onClick={props.handleDelete}
+            >
               X
             </span>
           </li>

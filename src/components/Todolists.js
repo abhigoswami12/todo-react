@@ -49,13 +49,13 @@ class TodoLists extends React.Component {
         isDone: false,
         id: uuid()
       };
-      const updatedTodos = this.state.todos;
-      updatedTodos.push(todo);
-
-      this.setState({ todos: updatedTodos, inputText: "" }, () =>
-        localStorage.setItem("todos", JSON.stringify(this.state.todos))
+      // this.setState({ todos: [...this.state.todos, todo], inputText: "" }, () =>
+      //   localStorage.setItem("todos", JSON.stringify(this.state.todos))
+      // );
+      this.setState(
+        { todos: this.state.todos.concat(todo), inputText: "" },
+        () => localStorage.setItem("todos", JSON.stringify(this.state.todos))
       );
-      // event.target.value = "";
     }
   };
 
@@ -86,26 +86,19 @@ class TodoLists extends React.Component {
 
   handleisDone = event => {
     const id = event.target.dataset.id;
-    // let todos = this.state.todos;
-    // let todo = todos.find((todo,index) => todo.index === id);
-
-    // todo = {...todo,isDone:!todo.isDone};
-    // todos = [...todos]
-
-    // this.setState({ isDone: !this.state.todos[id].isDone });
-    let updatedTodos = this.state.todos;
-    updatedTodos[id].isDone = !updatedTodos[id].isDone;
-    // this.setState({ isDone: this.state.todos[id].isDone });
-    this.setState({ todos: updatedTodos }, () =>
+    let todo = this.state.todos.find(todo => todo.id === id);
+    todo.isDone = !todo.isDone;
+    this.setState({ todos: this.state.todos }, () =>
       localStorage.setItem("todos", JSON.stringify(this.state.todos))
     );
   };
 
   handleDelete = event => {
     const id = event.target.dataset.id;
-    this.state.todos.splice(id, 1);
-    this.setState({ todos: this.state.todos }, () =>
-      localStorage.setItem("todos", JSON.stringify(this.state.todos))
+    console.log(id);
+    this.setState(
+      { todos: this.state.todos.filter(todo => todo.id !== id) },
+      () => localStorage.setItem("todos", JSON.stringify(this.state.todos))
     );
   };
 
