@@ -3,6 +3,10 @@ import Input from "./Input";
 import AllTodos from "./AllTodos";
 import Footer from "./Footer";
 
+import { v4 as uuid } from "uuid";
+
+// console.log(uuid());
+
 class TodoLists extends React.Component {
   constructor() {
     super();
@@ -42,7 +46,8 @@ class TodoLists extends React.Component {
       const text = event.target.value;
       const todo = {
         text: text,
-        isDone: false
+        isDone: false,
+        id: uuid()
       };
       const updatedTodos = this.state.todos;
       updatedTodos.push(todo);
@@ -99,7 +104,6 @@ class TodoLists extends React.Component {
   handleDelete = event => {
     const id = event.target.dataset.id;
     this.state.todos.splice(id, 1);
-    localStorage.setItem("todos", JSON.stringify(this.state.todos));
     this.setState({ todos: this.state.todos }, () =>
       localStorage.setItem("todos", JSON.stringify(this.state.todos))
     );
