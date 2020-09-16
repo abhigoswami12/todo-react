@@ -295,3 +295,9 @@ p {
   background: #fff;
   margin: 1rem 0;
 }
+.hide-clear-complete {
+  display: none;
+}
+.show-clear-complete {
+  display: inline-block;
+}

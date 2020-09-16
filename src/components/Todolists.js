@@ -5,8 +5,6 @@ import Footer from "./Footer";
 
 import { v4 as uuid } from "uuid";
 
-// console.log(uuid());
-
 class TodoLists extends React.Component {
   constructor() {
     super();
@@ -43,25 +41,23 @@ class TodoLists extends React.Component {
 
   addTodo = event => {
     if (event.keyCode === 13) {
-      const text = event.target.value;
-      const todo = {
-        text: text,
-        isDone: false,
-        id: uuid()
-      };
-      // this.setState({ todos: [...this.state.todos, todo], inputText: "" }, () =>
-      //   localStorage.setItem("todos", JSON.stringify(this.state.todos))
-      // );
-      this.setState(
-        { todos: this.state.todos.concat(todo), inputText: "" },
-        () => localStorage.setItem("todos", JSON.stringify(this.state.todos))
-      );
+      if (event.target.value.trim()) {
+        const text = event.target.value;
+        const todo = {
+          text: text,
+          isDone: false,
+          id: uuid()
+        };
+        this.setState(
+          { todos: this.state.todos.concat(todo), inputText: "" },
+          () => localStorage.setItem("todos", JSON.stringify(this.state.todos))
+        );
+      }
     }
   };
 
   handleSelectAll = event => {
     if (this.state.counter === 0) {
-      console.log("enter");
       this.state.todos.forEach(todo => {
         if (!todo.isDone) {
           todo.isDone = true;
@@ -84,8 +80,7 @@ class TodoLists extends React.Component {
     this.setState({ inputText: inputText });
   };
 
-  handleisDone = event => {
-    const id = event.target.dataset.id;
+  handleisDone = (id, event) => {
     let todo = this.state.todos.find(todo => todo.id === id);
     todo.isDone = !todo.isDone;
     this.setState({ todos: this.state.todos }, () =>
@@ -93,9 +88,7 @@ class TodoLists extends React.Component {
     );
   };
 
-  handleDelete = event => {
-    const id = event.target.dataset.id;
-    console.log(id);
+  handleDelete = (id, event) => {
     this.setState(
       { todos: this.state.todos.filter(todo => todo.id !== id) },
       () => localStorage.setItem("todos", JSON.stringify(this.state.todos))

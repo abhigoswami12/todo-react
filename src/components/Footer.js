@@ -18,13 +18,20 @@ function Footer(props) {
       <button className="active" onClick={props.handleFooterEvents.active}>
         Active
       </button>
-      <button className="clear">
+      {/* if({props.todosInState.filter(todo => todo.isDone).length}){} */}
+      <button
+        className={
+          props.todosInState.filter(todo => todo.isDone).length
+            ? "clear show-clear-complete"
+            : "hide-clear-complete"
+        }
+      >
         <a
           className="anchor"
           href="##"
           onClick={props.handleFooterEvents.clearCompleted}
         >
-          Clear Completed
+          Clear Complete
         </a>
       </button>
     </footer>

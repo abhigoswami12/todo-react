@@ -5,21 +5,21 @@ function AllTodos(props) {
     <ul>
       {props.showTodos.map((todo, index) => {
         return (
-          <li>
+          <li key={todo.id}>
             <input
               className="input-checkbox"
               type="checkbox"
               name="isDone"
               id=""
               checked={todo.isDone}
-              data-id={todo.id}
-              onChange={props.handleisDone}
+              onChange={event => props.handleisDone(todo.id, event)}
             />
-            <p className="para-target">{todo.text}</p>
+            <p className={todo.isDone ? "para-target strike" : "para-target"}>
+              {todo.text}
+            </p>
             <span
               className="span"
-              data-id={todo.id}
-              onClick={props.handleDelete}
+              onClick={event => props.handleDelete(todo.id, event)}
             >
               X
             </span>
