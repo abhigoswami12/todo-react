@@ -1,10 +1,6 @@
 import React from "react";
 
 class AllTodos extends React.Component {
-  // constructor() {
-  //   super();
-  // }
-
   render() {
     return (
       <ul>

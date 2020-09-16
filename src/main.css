@@ -134,7 +134,7 @@ table {
 .drop-down-flex {
   display: flex;
   align-items: center;
-  padding-left: 20px;
+  /* padding-left: 20px; */
 }
 
 body {
@@ -200,6 +200,9 @@ h1 {
 } */
 footer {
   padding: 30px 0;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
 }
 /* .All{
     border: 1px solid rgb(138, 103, 103);
@@ -294,6 +297,7 @@ p {
   box-shadow: 3px 3px 4px 6px rgb(212, 207, 207);
   background: #fff;
   margin: 1rem 0;
+  padding: 0 1rem;
 }
 .hide-clear-complete {
   display: none;

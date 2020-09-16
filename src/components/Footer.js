@@ -18,7 +18,6 @@ function Footer(props) {
       <button className="active" onClick={props.handleFooterEvents.active}>
         Active
       </button>
-      {/* if({props.todosInState.filter(todo => todo.isDone).length}){} */}
       <button
         className={
           props.todosInState.filter(todo => todo.isDone).length

@@ -3,13 +3,10 @@ import Input from "./Input";
 import AllTodos from "./AllTodos";
 import Footer from "./Footer";
 
-// import { v4 as uuid } from "uuid";
-
 class TodoLists extends React.Component {
   constructor() {
     super();
     this.state = {
-      // inputText: "",
       todos: localStorage.getItem("todos")
         ? JSON.parse(localStorage.getItem("todos"))
         : [],
@@ -19,43 +16,26 @@ class TodoLists extends React.Component {
   }
 
   showTodos = () => {
-    let showTodos = [];
+    let { todos } = this.state;
+
     switch (this.state.activeTab) {
       case "all":
-        showTodos = this.state.todos;
-        return showTodos;
+        todos = this.state.todos;
+        return todos;
 
       case "completed":
-        showTodos = this.state.todos.filter(todo => todo.isDone);
-        return showTodos;
+        todos = this.state.todos.filter(todo => todo.isDone);
+        return todos;
 
       case "active":
-        showTodos = this.state.todos.filter(todo => !todo.isDone);
-        return showTodos;
+        todos = this.state.todos.filter(todo => !todo.isDone);
+        return todos;
 
       default:
-        showTodos = this.state.todos;
-        return showTodos;
+        todos = this.state.todos;
+        return todos;
     }
   };
-
-  // addTodo = event => {
-  //   if (event.keyCode === 13) {
-  //     if (event.target.value.trim()) {
-  //       const text = event.target.value;
-  //       const todo = {
-  //         text: text,
-  //         isDone: false,
-  //         id: uuid()
-  //       };
-  //       this.setState(
-  //         { todos: this.state.todos.concat(todo), inputText: "" },
-  //         () => localStorage.setItem("todos", JSON.stringify(this.state.todos))
-  //       );
-  //     }
-  //   }
-  // };
-
   addTodo = todo => {
     this.setState({ todos: [...this.state.todos, todo] }, () =>
       localStorage.setItem("todos", JSON.stringify(this.state.todos))
@@ -81,17 +61,7 @@ class TodoLists extends React.Component {
     );
   };
 
-  // handleInputTextValue = event => {
-  //   const inputText = event.target.value;
-  //   this.setState({ inputText: inputText });
-  // };
-
   handleisDone = (id, event) => {
-    // let todo = this.state.todos.find(todo => todo.id === id);
-    // todo.isDone = !todo.isDone;
-    // this.setState({ todos: this.state.todos }, () =>
-    //   localStorage.setItem("todos", JSON.stringify(this.state.todos))
-    // );
     this.setState({
       todos: this.state.todos.map(todo => {
         if (todo.id === id) {

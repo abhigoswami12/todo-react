@@ -37,11 +37,8 @@ class Input extends React.Component {
           type="text"
           placeholder="write something"
           className="text-input"
-          // onChange={this.props.handleInputTextValue}
-          // onKeyUp={this.props.addTodo}
           onChange={this.handleInputTextValue}
           onKeyUp={this.whenEnterPressed}
-          // value={this.props.inputText}
           value={this.state.text}
         />
       </div>
