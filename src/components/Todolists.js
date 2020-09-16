@@ -105,11 +105,8 @@ class TodoLists extends React.Component {
     return (
       <>
         <Input
-          todos={this.state.todos}
           counter={this.state.counter}
-          inputText={this.state.inputText}
           handleSelectAll={this.handleSelectAll}
-          handleInputTextValue={this.handleInputTextValue}
           addTodo={this.addTodo}
         />
         <AllTodos
